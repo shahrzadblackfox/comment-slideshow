@@ -1,24 +1,60 @@
-import React from 'react'
-import { FaChevronLeft, FaChevronRight, FaQuoteRight } from 'react-icons/fa';
-import data from './data'
+import React, { useState } from "react";
+import { FaChevronLeft, FaChevronRight, FaQuoteRight } from "react-icons/fa";
+import data from "./data";
 function Reviews() {
-     return (
-          <div className="reviews">
-               <div className="review-img">
-                    <img src="https://images.pexels.com/photos/9154716/pexels-photo-9154716.jpeg?cs=srgb&dl=pexels-cottonbro-9154716.jpg&fm=jpg" alt="" />
-               </div>
-               <h4 className="author">
-                    فرزاد معصومی
-               </h4>
-               <p className="job">گرافیست</p>
-               <p className="info">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
-               <div className="review-button">
-                    <button><FaChevronRight /></button>
-                    <button><FaChevronLeft /></button>
-               </div>
-               <button className="random-btn">عشقی</button>
-          </div>
-     )
+  const [index, setIndex] = useState(0);
+  const { name, job, image, text } = data[index];
+  const checkNumber = (number) => {
+    if (number > data.length - 1) {
+      return 0;
+    }
+    if (number < 0) {
+      return data.length - 1;
+    }
+    return number;
+  };
+
+  const nextSlide = () => {
+    setIndex((index) => {
+      let newIndex = index + 1;
+      return checkNumber(newIndex);
+    });
+  };
+  const prevSlide = () => {
+    setIndex((index) => {
+      let newIndex = index - 1;
+      return checkNumber(newIndex);
+    });
+  };
+  const randomComment = () => {
+    let randomNumber = Math.floor(Math.random() * data.length);
+    if(randomNumber ===index){
+     randomNumber = index + 1
+    }
+    setIndex(checkNumber(randomNumber))
+  };
+
+  return (
+    <div className="reviews">
+      <div className="review-img">
+        <img src={image} alt="" />
+      </div>
+      <h4 className="author">{name}</h4>
+      <p className="job">{job}</p>
+      <p className="info">{text}</p>
+      <div className="review-button">
+        <button onClick={nextSlide}>
+          <FaChevronRight />
+        </button>
+        <button onClick={prevSlide}>
+          <FaChevronLeft />
+        </button>
+      </div>
+      <button onClick={randomComment} className="random-btn">
+        عشقی
+      </button>
+    </div>
+  );
 }
 
-export default Reviews
+export default Reviews;
